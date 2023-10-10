@@ -34,7 +34,7 @@ function App() {
             element={<RequestNotificationDetail />}
           ></Route>
           <Route
-            path="/accepted-exam-detail"
+            path="/accepted-exam-detail/:notificationId"
             element={<AcceptedExamDetail />}
           ></Route>
           <Route
@@ -42,7 +42,6 @@ function App() {
             element={<NotificationDetail />}
           ></Route>
           <Route path="/skyway" element={<Skyway />}></Route>
-
 
           {/* デフォルトルート（例: ユーザがサイトにアクセスしたときに表示されるページ） */}
           {/* /login, /register以外のルートに対して以下がマッチする (path="/*" ワイルドカードのため)
