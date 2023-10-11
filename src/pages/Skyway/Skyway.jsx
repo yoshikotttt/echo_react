@@ -158,6 +158,7 @@ const Skyway = () => {
     try {
       screenStream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
+        audio: true,
       });
       myVideoRef.current.srcObject = screenStream;
       myVideoRef.current.play();
