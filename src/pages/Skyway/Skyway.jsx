@@ -1,29 +1,67 @@
-import  { useEffect, useRef } from "react";
+import Cookies from "js-cookie";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import Peer from "skyway-js";
+import axios from "axios";
 
-const Skyway = ({ exam, skywayApiKey, skywayId }) => {
+const Skyway = () => {
+  const { notificationId } = useParams();
+  const [mySkywayId, setMySkywayId] = useState(null); // 自身のSkywayID用のstate
+  const [toUserSkywayId, setToUserSkywayId] = useState(null); // toUserのSkywayID用のstate
+  const [skywayApiKey, setSkywayApiKey] = useState(null);
+  const [toUserName, setToUserName] = useState(null);
+  const [fromUserName, setFromUserName] = useState(null);
+  const [isCalling, setIsCalling] = useState(false); // 発信中かどうかを保持する新しいstate
+  const [medicalExam, setMedicalExam] = useState({});
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const token = Cookies.get("token");
+
   const myVideoRef = useRef(null);
   const theirVideoRef = useRef(null);
   const peerRef = useRef(null);
   let localStream;
   let screenStream;
-  let peer;
 
   useEffect(() => {
-    // peerRef.current = new Peer({
-    //     key: skywayApiKey,
-    //     id: skywayId,
-    //     debug: 3,
-    // });
+    // Skyway情報を取得するAPI呼び出し
+    const fetchSkywayData = async () => {
+      try {
+        const response = await axios.get(
+          `${baseURL}/api/notifications/${notificationId}/skyway-id`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setMySkywayId(response.data.mySkywayId); // 自身のSkywayID
+        setToUserSkywayId(response.data.toUserSkywayId); // toUserのSkywayID
+        setSkywayApiKey(response.data.skywayApiKey);
+        setToUserName(response.data.toUserName);
+        setFromUserName(response.data.fromUserName);
+        setMedicalExam(response.data.medicalExam);
+      } catch (error) {
+        console.error("Error fetching Skyway data:", error);
+      }
+    };
 
-    peerRef.current = new Peer(skywayId, {
+    fetchSkywayData();
+  }, [notificationId, baseURL, token]);
+
+  console.log(mySkywayId);
+  console.log(toUserSkywayId);
+  // console.log(skywayApiKey);
+
+  useEffect(() => {
+    if (!mySkywayId) return; // SkywayIDがまだ取得されていない場合は何もしない
+
+    peerRef.current = new Peer(mySkywayId, {
       key: skywayApiKey,
       debug: 3,
     });
 
     peerRef.current.on("open", () => {
-      console.log("Peer is open. My Peer ID:", skywayId);
-      console.log("Peer is open. My Peer ID:", peerRef.current.id);
+      console.log("Peer is open. My Peer ID:", mySkywayId);
     });
 
     navigator.mediaDevices
@@ -58,16 +96,30 @@ const Skyway = ({ exam, skywayApiKey, skywayId }) => {
     peerRef.current.on("close", () => {
       alert("通信が切断しました。");
     });
-  }, []);
+  }, [mySkywayId]);
+
+  // const handleMakeCall = () => {
+  //   setIsCalling(true); // 発信開始時にisCallingをtrueにする
+  //   const theirID = document.getElementById("their-id").value;
+  //   const mediaConnection = peerRef.current.call(theirID, localStream);
+  //   console.log("me", mediaConnection);
+  //   mediaConnection.on("stream", (stream) => {
+  //     const videoElm = theirVideoRef.current;
+  //     videoElm.srcObject = stream;
+  //     videoElm.play();
+  //     setIsCalling(false); // 接続が完了したらisCallingをfalseにする
+  //   });
+  // };
 
   const handleMakeCall = () => {
-    const theirID = document.getElementById("their-id").value;
-    const mediaConnection = peerRef.current.call(theirID, localStream);
+    setIsCalling(true); // 発信開始時にisCallingをtrueにする
+    const mediaConnection = peerRef.current.call(toUserSkywayId, localStream);
     console.log("me", mediaConnection);
     mediaConnection.on("stream", (stream) => {
       const videoElm = theirVideoRef.current;
       videoElm.srcObject = stream;
       videoElm.play();
+      setIsCalling(false); // 接続が完了したらisCallingをfalseにする
     });
   };
 
@@ -82,51 +134,59 @@ const Skyway = ({ exam, skywayApiKey, skywayId }) => {
   };
 
   return (
-    <div className="medical-exam-video">
-      <div className="medical-exam-video__main">
-        <video
-          ref={myVideoRef}
-          className="medical-exam-video__my-video"
-          width={200}
-        ></video>
-        <p id="my-id" className="medical-exam-video__my-id"></p>
-        <input
-          id="their-id"
-          className="medical-exam-video__their-id"
-          placeholder="相手のID"
-        />
-        <button
-          onClick={handleMakeCall}
-          className="medical-exam-video__make-call-button"
-        >
-          発信
-        </button>
-        <button
-          onClick={handleShareScreen}
-          className="medical-exam-video__share-screen-button"
-        >
-          画面共有
-        </button>
-        <button
-          onClick={handleStopScreen}
-          className="medical-exam-video__stop-screen-button"
-        >
-          共有停止
-        </button>
+    <>
+      <p>{toUserName}さんへ依頼</p>
+      {/* {isCalling && <div className="loading">接続中...</div>} */}
+      <div className="medical-exam-video">
+        <div className="medical-exam-video__main">
+          <video
+            ref={myVideoRef}
+            className="medical-exam-video__my-video"
+            width={200}
+          ></video>
+          {/* <p id="my-id" className="medical-exam-video__my-id"></p>
+          <input
+            id="their-id"
+            className="medical-exam-video__their-id"
+            placeholder="相手のID"
+            value={toUserSkywayId || ""} // ここでtoUserSkywayIdをvalue属性にバインド
+            readOnly // これでインプットが読み取り専用になる
+          /> */}
+
+          <button
+            onClick={handleMakeCall}
+            className="medical-exam-video__make-call-button"
+          >
+            発信
+          </button>
+          <button
+            onClick={handleShareScreen}
+            className="medical-exam-video__share-screen-button"
+          >
+            画面共有
+          </button>
+          <button
+            onClick={handleStopScreen}
+            className="medical-exam-video__stop-screen-button"
+          >
+            共有停止
+          </button>
+        </div>
+        <div className="medical-exam-video__side">
+          <video
+            ref={theirVideoRef}
+            className="medical-exam-video__their-video"
+            width={200}
+          ></video>
+          <div className="medical-exam-video__details">
+            <p>{medicalExam.age}</p>
+            <p>{medicalExam.gender}</p>
+            <p>{medicalExam.chief_complaint}</p>
+            <p>{medicalExam.medical_history}</p>
+          </div>
+        </div>
       </div>
-      <div className="medical-exam-video__side">
-        <video
-          ref={theirVideoRef}
-          className="medical-exam-video__their-video"
-        ></video>
-        {/* <div className="medical-exam-video__details">
-                    <p>{exam.age}</p>
-                    <p>{exam.gender}</p>
-                    <p>{exam.chief_complaint}</p>
-                    <p>{exam.medical_history}</p>
-                </div> */}
-      </div>
-    </div>
+    </>
   );
 };
 

@@ -1,12 +1,11 @@
-// import React from 'react'
-
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const RequestDoctor = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const initialResults = location.state ? location.state.data : [];
   const [results, setResults] = useState(initialResults);
@@ -14,6 +13,9 @@ const RequestDoctor = () => {
   // const [message, setMessage] = useState("");
   const baseURL = import.meta.env.VITE_API_BASE_URL;
   const token = Cookies.get("token");
+console.log(results)
+console.log(location.state)
+
   const {
     register,
     handleSubmit,
@@ -25,7 +27,7 @@ const RequestDoctor = () => {
   const onSubmit = async (data) => {
     // データの送信処理
     try {
-      await axios.post(
+      const response = await axios.post(
         `${baseURL}/api/notifications`,
         {
           to_user_id: data.selected_result,
@@ -38,6 +40,10 @@ const RequestDoctor = () => {
         }
       );
       console.log("依頼が完了しました！");
+      // APIの呼び出しが成功した後にページを遷移させる
+      navigate("/exam-detail-input", {
+        state: { responseData: response.data },
+      });
     } catch (error) {
       console.error("Error creating notification:", error);
     }
@@ -85,4 +91,4 @@ const RequestDoctor = () => {
   );
 };
 
-export default RequestDoctor
+export default RequestDoctor;
