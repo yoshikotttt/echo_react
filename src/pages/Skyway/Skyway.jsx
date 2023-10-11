@@ -50,7 +50,7 @@ const Skyway = () => {
 
   console.log(mySkywayId);
   console.log(toUserSkywayId);
-  // console.log(skywayApiKey);
+  // console.log(medicalExam)
 
   useEffect(() => {
     if (!mySkywayId) return; // SkywayIDがまだ取得されていない場合は何もしない
@@ -67,7 +67,9 @@ const Skyway = () => {
     navigator.mediaDevices
       .getUserMedia({
         video: true,
-        audio: true,
+        audio: {
+          echoCancellation: true,
+        },
       })
       .then((stream) => {
         const videoElm = myVideoRef.current;
@@ -96,12 +98,47 @@ const Skyway = () => {
     peerRef.current.on("close", () => {
       alert("通信が切断しました。");
     });
+
+    return () => {
+      if (peerRef.current) {
+        peerRef.current.destroy();
+      }
+    };
   }, [mySkywayId]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (peerRef.current) {
+        peerRef.current.destroy();
+      }
+
+      if (localStream) {
+        localStream.getTracks().forEach((track) => {
+          track.stop();
+        });
+        myVideoRef.current.srcObject = null; // <--- 追加
+        theirVideoRef.current.srcObject = null; // <--- 追加
+      }
+
+      if (screenStream) {
+        screenStream.getTracks().forEach((track) => {
+          track.stop();
+        });
+      }
+      myVideoRef.current.srcObject = null; // <--- 追加
+      theirVideoRef.current.srcObject = null; // <--- 追加
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   // const handleMakeCall = () => {
   //   setIsCalling(true); // 発信開始時にisCallingをtrueにする
-  //   const theirID = document.getElementById("their-id").value;
-  //   const mediaConnection = peerRef.current.call(theirID, localStream);
+  //   const mediaConnection = peerRef.current.call(toUserSkywayId, localStream);
   //   console.log("me", mediaConnection);
   //   mediaConnection.on("stream", (stream) => {
   //     const videoElm = theirVideoRef.current;
@@ -112,25 +149,75 @@ const Skyway = () => {
   // };
 
   const handleMakeCall = () => {
-    setIsCalling(true); // 発信開始時にisCallingをtrueにする
+    setIsCalling(true);
     const mediaConnection = peerRef.current.call(toUserSkywayId, localStream);
-    console.log("me", mediaConnection);
-    mediaConnection.on("stream", (stream) => {
-      const videoElm = theirVideoRef.current;
-      videoElm.srcObject = stream;
-      videoElm.play();
-      setIsCalling(false); // 接続が完了したらisCallingをfalseにする
-    });
+    setEventListener(mediaConnection);
   };
 
-  // 画面共有の開始
   const handleShareScreen = async () => {
-    // ... 画面共有のロジック
+    try {
+      screenStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+      });
+      myVideoRef.current.srcObject = screenStream;
+      myVideoRef.current.play();
+      if (toUserSkywayId) {
+        const mediaConnection = peerRef.current.call(
+          toUserSkywayId,
+          screenStream
+        );
+        setEventListener(mediaConnection);
+      }
+    } catch (error) {
+      console.error("getDisplayMedia() error:", error);
+    }
   };
 
-  // 画面共有の停止
   const handleStopScreen = () => {
-    // ... 画面共有停止のロジック
+    if (screenStream) {
+      const tracks = screenStream.getTracks();
+      tracks.forEach((track) => track.stop());
+      myVideoRef.current.srcObject = null; // <--- 追加
+      theirVideoRef.current.srcObject = null; // <--- 追加
+      myVideoRef.current.srcObject = localStream;
+      myVideoRef.current.play();
+
+      // ステップ3: 新しいカメラのストリームを使用して、相手に再度通話を開始する
+      if (toUserSkywayId) {
+        const mediaConnection = peerRef.current.call(
+          toUserSkywayId,
+          localStream
+        );
+        setEventListener(mediaConnection);
+      }
+    }
+  };
+
+  const handleEndCall = () => {
+    if (localStream) {
+      localStream.getTracks().forEach((track) => track.stop());
+      myVideoRef.current.srcObject = null;
+      theirVideoRef.current.srcObject = null; // <--- 追加
+    }
+
+    if (screenStream) {
+      screenStream.getTracks().forEach((track) => track.stop());
+      myVideoRef.current.srcObject = null;
+      
+    }
+
+    theirVideoRef.current.srcObject = null;
+
+    if (peerRef.current) {
+      peerRef.current.destroy();
+    }
+  };
+
+  const setEventListener = (mediaConnection) => {
+    mediaConnection.on("stream", (stream) => {
+      theirVideoRef.current.srcObject = stream;
+      theirVideoRef.current.play();
+    });
   };
 
   return (
@@ -144,14 +231,6 @@ const Skyway = () => {
             className="medical-exam-video__my-video"
             width={200}
           ></video>
-          {/* <p id="my-id" className="medical-exam-video__my-id"></p>
-          <input
-            id="their-id"
-            className="medical-exam-video__their-id"
-            placeholder="相手のID"
-            value={toUserSkywayId || ""} // ここでtoUserSkywayIdをvalue属性にバインド
-            readOnly // これでインプットが読み取り専用になる
-          /> */}
 
           <button
             onClick={handleMakeCall}
@@ -170,6 +249,12 @@ const Skyway = () => {
             className="medical-exam-video__stop-screen-button"
           >
             共有停止
+          </button>
+          <button
+            onClick={handleEndCall}
+            className="medical-exam-video__end-call-button"
+          >
+            接続終了
           </button>
         </div>
         <div className="medical-exam-video__side">
