@@ -15,12 +15,11 @@ const Skyway = () => {
   const [medicalExam, setMedicalExam] = useState({});
   const baseURL = import.meta.env.VITE_API_BASE_URL;
   const token = Cookies.get("token");
-  const [localStream, setLocalStream] = useState(null); // localStreamをステートとして管理
 
   const myVideoRef = useRef(null);
   const theirVideoRef = useRef(null);
   const peerRef = useRef(null);
-  // let localStream;
+  let localStream;
   let screenStream;
 
   useEffect(() => {
@@ -76,7 +75,7 @@ const Skyway = () => {
         const videoElm = myVideoRef.current;
         videoElm.srcObject = stream;
         videoElm.play();
-        setLocalStream(stream); // ステートを更新
+        localStream = stream;
       })
       .catch((error) => {
         console.error("mediaDevice.getUserMedia() error:", error);
@@ -156,11 +155,6 @@ const Skyway = () => {
   };
 
   const handleShareScreen = async () => {
-    if (!localStream) {
-      // localStreamの存在確認
-      console.error("Local stream is not initialized.");
-      return;
-    }
     try {
       screenStream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
