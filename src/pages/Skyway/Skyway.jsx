@@ -160,8 +160,15 @@ const Skyway = () => {
         video: true,
         audio: true,
       });
+
+      // localStreamからの音声トラックをscreenStreamに追加
+      localStream.getAudioTracks().forEach((track) => {
+        screenStream.addTrack(track.clone());
+      });
+
       myVideoRef.current.srcObject = screenStream;
       myVideoRef.current.play();
+
       if (toUserSkywayId) {
         const mediaConnection = peerRef.current.call(
           toUserSkywayId,
