@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
@@ -8,6 +8,7 @@ const AcceptedExamDetail = () => {
   const [examDetail, setExamDetail] = useState(null);
   const baseURL = import.meta.env.VITE_API_BASE_URL;
   const token = Cookies.get("token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchExamDetail = async () => {
@@ -31,11 +32,8 @@ const AcceptedExamDetail = () => {
 
     const handleSkywayClick = () => {
       // Skywayのページに遷移するコード
-      // 例えば、skywayIdを使用して特定のURLに遷移する場合:
-      window.open(
-        `https://skyway.example.com/call/${examDetail.fromUser.skywayId}`,
-        "_blank"
-      );
+    navigate(`/skyway/${notificationId}`);
+     
     };
 
   return (

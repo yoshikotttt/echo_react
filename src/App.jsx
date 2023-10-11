@@ -41,7 +41,7 @@ function App() {
             path="/notification-detail"
             element={<NotificationDetail />}
           ></Route>
-          <Route path="/skyway" element={<Skyway />}></Route>
+          <Route path="/skyway/:notificationId" element={<Skyway />}></Route>
 
           {/* デフォルトルート（例: ユーザがサイトにアクセスしたときに表示されるページ） */}
           {/* /login, /register以外のルートに対して以下がマッチする (path="/*" ワイルドカードのため)
