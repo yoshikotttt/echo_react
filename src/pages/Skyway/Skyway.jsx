@@ -86,6 +86,7 @@ const Skyway = () => {
     peerRef.current.on("call", (mediaConnection) => {
       mediaConnection.answer(localStream);
       mediaConnection.on("stream", (stream) => {
+         console.log("Received stream from the other user"); // これを追加
         const videoElm = theirVideoRef.current;
         videoElm.srcObject = stream;
         videoElm.play();
@@ -107,6 +108,7 @@ const Skyway = () => {
     };
   }, [mySkywayId]);
 
+  //ユーザーがページを閉じようとしたときに、接続やストリームを破棄
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (peerRef.current) {
@@ -137,24 +139,21 @@ const Skyway = () => {
     };
   }, []);
 
-  // const handleMakeCall = () => {
-  //   setIsCalling(true); // 発信開始時にisCallingをtrueにする
-  //   const mediaConnection = peerRef.current.call(toUserSkywayId, localStream);
-  //   console.log("me", mediaConnection);
-  //   mediaConnection.on("stream", (stream) => {
-  //     const videoElm = theirVideoRef.current;
-  //     videoElm.srcObject = stream;
-  //     videoElm.play();
-  //     setIsCalling(false); // 接続が完了したらisCallingをfalseにする
-  //   });
-  // };
+   const setEventListener = (mediaConnection) => {
+     mediaConnection.on("stream", (stream) => {
+       theirVideoRef.current.srcObject = stream;
+       theirVideoRef.current.play();
+     });
+   };
 
+  //通話を開始する toUserSkywayIdにlocalStreamを送信する
   const handleMakeCall = () => {
     setIsCalling(true);
     const mediaConnection = peerRef.current.call(toUserSkywayId, localStream);
     setEventListener(mediaConnection);
   };
 
+  //画面共有を開始する関数
   const handleShareScreen = async () => {
     if (!localStream) {
       // localStreamの存在確認
@@ -187,6 +186,7 @@ const Skyway = () => {
     }
   };
 
+  //画面共有を停止
   const handleStopScreen = () => {
     if (screenStream) {
       const tracks = screenStream.getTracks();
@@ -226,12 +226,7 @@ const Skyway = () => {
     }
   };
 
-  const setEventListener = (mediaConnection) => {
-    mediaConnection.on("stream", (stream) => {
-      theirVideoRef.current.srcObject = stream;
-      theirVideoRef.current.play();
-    });
-  };
+ 
 
   return (
     <>
