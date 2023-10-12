@@ -8,7 +8,6 @@ const Skyway = () => {
   const { notificationId } = useParams();
   const [mySkywayId, setMySkywayId] = useState(null); // 自身のSkywayID用のstate
   const [toUserSkywayId, setToUserSkywayId] = useState(null); // toUserのSkywayID用のstate
-  const [fromUserSkywayId, setFromUserSkywayId] = useState(null); // fromUserのSkywayID用のstate
   const [skywayApiKey, setSkywayApiKey] = useState(null);
   const [toUserName, setToUserName] = useState(null);
   const [fromUserName, setFromUserName] = useState(null);
@@ -17,6 +16,7 @@ const Skyway = () => {
   const baseURL = import.meta.env.VITE_API_BASE_URL;
   const token = Cookies.get("token");
   const [localStream, setLocalStream] = useState(null); // localStreamをステートとして管理
+  const [isStreamReady, setIsStreamReady] = useState(false);
 
   const myVideoRef = useRef(null);
   const theirVideoRef = useRef(null);
@@ -38,7 +38,6 @@ const Skyway = () => {
         );
         setMySkywayId(response.data.mySkywayId); // 自身のSkywayID
         setToUserSkywayId(response.data.toUserSkywayId); // toUserのSkywayID
-        setFromUserSkywayId(response.data.fromUserSkywayId); // toUserのSkywayID
         setSkywayApiKey(response.data.skywayApiKey);
         setToUserName(response.data.toUserName);
         setFromUserName(response.data.fromUserName);
@@ -51,11 +50,26 @@ const Skyway = () => {
     fetchSkywayData();
   }, [notificationId, baseURL, token]);
 
-  console.log(mySkywayId);
-  console.log(toUserSkywayId);
-  console.log(fromUserSkywayId);
-  // console.log(medicalExam)
+  useEffect(() => {
+    if (isStreamReady) {
+      peerRef.current.on("call", (mediaConnection) => {
+        console.log("Answering the call");
+        mediaConnection.answer(localStream);
+        console.log("Local stream:", localStream);
 
+        mediaConnection.on("stream", (stream) => {
+          console.log("Received stream from the other user");
+          const videoElm = theirVideoRef.current;
+          videoElm.srcObject = stream;
+          videoElm.play();
+        });
+      });
+    }
+  }, [isStreamReady]);
+
+  // console.log(mySkywayId);
+  // console.log(toUserSkywayId);
+  // console.log(medicalExam)
 
   useEffect(() => {
     if (!mySkywayId) return; // SkywayIDがまだ取得されていない場合は何もしない
@@ -66,7 +80,7 @@ const Skyway = () => {
     });
 
     peerRef.current.on("open", () => {
-      console.log("Peer is open. My Peer ID:", mySkywayId);
+      // console.log("Peer is open. My Peer ID:", mySkywayId);
     });
 
     navigator.mediaDevices
@@ -77,12 +91,12 @@ const Skyway = () => {
         },
       })
       .then((stream) => {
-        console.log("stream確認", stream);
+        console.log("Successfully got user media:", stream);
         const videoElm = myVideoRef.current;
         videoElm.srcObject = stream;
         videoElm.play();
         setLocalStream(stream); // ステートを更新
-        console.log("確認", localStream);
+        setIsStreamReady(true); // ストリームが準備できたことを示すステートをtrueにする
       })
       .catch((error) => {
         console.error("mediaDevice.getUserMedia() error:", error);
@@ -90,9 +104,18 @@ const Skyway = () => {
 
     // イベントリスナーの設定
     peerRef.current.on("call", (mediaConnection) => {
+      if (!isStreamReady) {
+        // ストリームが準備されていない場合、処理を終了する
+        console.log("Stream is not ready yet.");
+        return;
+      }
+
+      console.log("Answering the call");
       mediaConnection.answer(localStream);
+      console.log("Local stream:", localStream);
+
       mediaConnection.on("stream", (stream) => {
-        console.log("Received stream from the other user"); // これを追加
+        console.log("Received stream from the other user");
         const videoElm = theirVideoRef.current;
         videoElm.srcObject = stream;
         videoElm.play();
@@ -114,9 +137,6 @@ const Skyway = () => {
     };
   }, [mySkywayId]);
 
-  useEffect(() => {
-    console.log("localStreamが更新されました:", localStream);
-  }, [localStream]);
   //ユーザーがページを閉じようとしたときに、接続やストリームを破棄
   useEffect(() => {
     const handleBeforeUnload = (e) => {
@@ -148,23 +168,40 @@ const Skyway = () => {
     };
   }, []);
 
+  // 相手との通信がつながって、相手の映像や音声データを受信した時にそのデータを表示する
+  // 受信者の方で発火する関数
   const setEventListener = (mediaConnection) => {
     mediaConnection.on("stream", (stream) => {
+      console.log("Received a stream from the other user"); // こちらが追加された部分
       theirVideoRef.current.srcObject = stream;
       theirVideoRef.current.play();
     });
   };
 
   //通話を開始する toUserSkywayIdにlocalStreamを送信する
+  // 発信側で発火する関数
+  // const handleMakeCall = () => {
+  //   console.log("handleMakeCall関数が動いている");
+  //   setIsCalling(true);
+  //   const mediaConnection = peerRef.current.call(toUserSkywayId, localStream);
+  //   console.log(mediaConnection);
+  //   setEventListener(mediaConnection);
+  // };
   const handleMakeCall = () => {
-    // setIsCalling(true);
+    console.log("handleMakeCall関数が動いている");
+    setIsCalling(true);
     const mediaConnection = peerRef.current.call(toUserSkywayId, localStream);
+    console.log(mediaConnection);
+
+    // この部分を追加
+    // ここのstreamは受信側のビデオの情報
     mediaConnection.on("stream", (stream) => {
-      console.log("Received stream from the other user (caller side)"); // caller側でのログ
-      const videoElm = theirVideoRef.current;
-      videoElm.srcObject = stream;
-      videoElm.play();
+      console.log("Received a stream from the other user");
+      theirVideoRef.current.srcObject = stream;
+      theirVideoRef.current.play();
     });
+
+    // setEventListener(mediaConnection); // この行は削除しても良い
   };
 
   //画面共有を開始する関数
@@ -284,7 +321,7 @@ const Skyway = () => {
             ref={theirVideoRef}
             className="medical-exam-video__their-video"
             width={200}
-            autoPlay
+            autoPlay // これを追加
           ></video>
           <div className="medical-exam-video__details">
             <p>{medicalExam.age}</p>
