@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  color: white;
+  background-color: #000c42;
+}
+
+.header-logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.header-title {
+  font-size: 1rem;
+  margin-right: 40px;
+}
+
+.header-subtitle {
+  font-size: 1rem;
+  margin-right: auto;
+}
+
+.user-dropdown {
+  cursor: pointer;
+}

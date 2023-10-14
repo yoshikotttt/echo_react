@@ -1,0 +1,27 @@
+.sidebar {
+    background-color: #f2f9f5;
+
+    height: 80vh;
+    padding: 20px;
+
+    .logo {
+        background-color: #484e9f; // オレンジ色
+        color: #ffffff; // ロゴのテキスト色
+        text-align: center;
+        padding: 10px;
+        font-size: 1.4rem;
+        margin-bottom: 40px;
+    }
+
+    .menu-item {
+        background-color: #ffffff; // 白色
+        padding: 10px 10px;
+        margin-top: 40px;
+        font-size: 1rem;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #ddd; // マウスホバー時の背景色
+        }
+    }
+}
