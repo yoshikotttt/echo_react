@@ -34,7 +34,6 @@ const Home = () => {
 
   return (
     <>
-      <div>Home</div>
       {role === 1 ? (
         <AcceptDoctorHome userData={userData} />
       ) : (
