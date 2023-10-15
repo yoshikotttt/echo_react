@@ -109,6 +109,7 @@ const RequestDoctorHome = () => {
 
           <div>
             {notifications
+              .sort((a, b) => a.id - b.id)
               .filter((notification) => notification.status === 0)
               .map((notification) => (
                 <div

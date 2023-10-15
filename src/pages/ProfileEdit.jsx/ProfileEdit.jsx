@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import styles from "./ProfileEdit.module.scss";
 
 const ProfileEdit = () => {
   const [userData, setUserData] = useState({
@@ -36,11 +37,11 @@ const ProfileEdit = () => {
         setValue("qualification", response.data.qualification);
         setValue("qualification_year", response.data.qualification_year);
 
-         if (response.data.areas) {
-           response.data.areas.forEach((area) => {
-             setValue(`areas[${area}]`, true);
-           });
-         }
+        if (response.data.areas) {
+          response.data.areas.forEach((area) => {
+            setValue(`areas[${area}]`, true);
+          });
+        }
       } catch (error) {
         console.error("ユーザーデータの取得に失敗しました: ", error);
       }
@@ -66,41 +67,68 @@ const ProfileEdit = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Email:</label>
-        <input type="text" id="email" name="email" {...register("email")} />
-      </div>
-
-      <div>
-        <label>Name:</label>
-        <input type="text" id="name" name="name" {...register("name")} />
-      </div>
-
-      <div>
-        <label>Role:</label>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles["form"]}>
+      <div className={styles["input-group"]}>
+        <label className={styles["label"]}>名前</label>
         <input
-          type="radio"
-          value="0"
-          {...register("role", { required: true })}
-          checked={userData && userData.role == 0}
+          type="text"
+          id="name"
+          name="name"
+          {...register("name")}
+          className={styles["input"]}
         />
-        依頼医
-        <input
-          type="radio"
-          value="1"
-          {...register("role", { required: true })}
-          checked={userData && userData.role == 1}
-        />
-        受託医
       </div>
 
-      <div>
-        <label>地域:</label>
-        <select {...register("region", { required: true })}>
+      <div className={styles["input-group"]}>
+        <label className={styles["label"]}>メールアドレス</label>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          {...register("email")}
+          className={styles["input"]}
+        />
+      </div>
+
+      <div className={styles["radio-group"]}>
+        <label className={styles["label"]}>依頼医/受託医</label>
+
+        <div className={styles["radio-options"]}>
+          <div className={styles["radio-container"]}>
+            <input
+              type="radio"
+              value="0"
+              {...register("role", { required: true })}
+              checked={userData && userData.role == 0}
+              className={styles["radio"]}
+              id="role0"
+            />
+            <label htmlFor="role0">依頼医</label>
+          </div>
+
+          <div className={styles["radio-container"]}>
+            <input
+              type="radio"
+              value="1"
+              {...register("role", { required: true })}
+              checked={userData && userData.role == 1}
+              className={styles["radio"]}
+              id="role1"
+            />
+            <label htmlFor="role1">受託医</label>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles["select-group"]}>
+        <label className={styles["label"]}>地域</label>
+        <select
+          {...register("region", { required: true })}
+          className={styles["select"]}
+        >
           {["北海道", "東北", "関東", "中部", "関西", "中国四国", "九州"].map(
             (region) => (
-              <option value={region} key={region}>
+              <option value={region} key={region} className={styles["option"]}>
                 {region}
               </option>
             )
@@ -108,25 +136,35 @@ const ProfileEdit = () => {
         </select>
       </div>
 
-      <div>
-        <label>資格:</label>
-        <select {...register("qualification", { required: true })}>
+      <div className={styles["select-group"]}>
+        <label className={styles["label"]}>資格</label>
+        <select
+          {...register("qualification", { required: true })}
+          className={styles["select"]}
+        >
           {["専門医", "検査士"].map((qualification) => (
-            <option value={qualification} key={qualification}>
+            <option
+              value={qualification}
+              key={qualification}
+              className={styles["option"]}
+            >
               {qualification}
             </option>
           ))}
         </select>
       </div>
 
-      <div>
-        <label>資格取得年度:</label>
-        <select {...register("qualification_year", { required: true })}>
+      <div className={styles["select-group"]}>
+        <label className={styles["label"]}>資格取得年度</label>
+        <select
+          {...register("qualification_year", { required: true })}
+          className={styles["select"]}
+        >
           {Array.from({ length: new Date().getFullYear() - 1989 }).map(
             (_, index) => {
               const year = 1990 + index;
               return (
-                <option value={year} key={year}>
+                <option value={year} key={year} className={styles["option"]}>
                   {year}
                 </option>
               );
@@ -135,22 +173,25 @@ const ProfileEdit = () => {
         </select>
       </div>
 
-      <div>
-        <label>対応可能領域:</label>
+      <div className={styles["checkbox-group"]}>
+        <label className={styles["label"]}>対応可能領域</label>
         {["上腹部", "下腹部", "心臓"].map((area) => (
-          <label key={area}>
+          <label key={area} className={styles["checkbox-label"]}>
             <input
               type="checkbox"
               value={area}
               {...register("areas")}
-              checked={userData.areas && userData.areas.includes(area)}
+              //   checked={userData.areas && userData.areas.includes(area)}
+              className={styles["checkbox"]}
             />
             {area}
           </label>
         ))}
       </div>
 
-      <button type="submit">送信</button>
+      <button type="submit" className={styles["submit-button"]}>
+        送信
+      </button>
     </form>
   );
 };
