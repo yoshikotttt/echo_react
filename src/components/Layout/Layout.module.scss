@@ -12,3 +12,9 @@
   flex: 1; /* 残りの幅をcontentに使用する */
   padding: 1rem; /* 必要に応じてパディングを追加 */
 }
+
+.skyway-layout-content {
+  width: 100%;
+  // 他のスタイルもこちらに追加することができます。
+}
+

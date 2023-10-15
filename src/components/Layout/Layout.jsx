@@ -6,17 +6,33 @@ import styles from "./Layout.module.scss"; // 追加: CSSのインポート
 function Layout({ children }) {
   const location = useLocation();
 
+  // /skyway/:notificationId のパターンに一致するかをチェック
+  const isSpecialPath =
+    /\/skyway\/\d+/.test(location.pathname) ||
+    location.pathname === "/login" ||
+    location.pathname === "/register";
+
   return (
     <div>
       {location.pathname !== "/login" && location.pathname !== "/register" && (
         <Header />
       )}
       <div className={styles["layout-container"]}>
-        <div className={styles["layout-sidebar"]}>
-          {location.pathname !== "/login" &&
-            location.pathname !== "/register" && <Sidebar />}
+        {!isSpecialPath && (
+          <div className={styles["layout-sidebar"]}>
+            {location.pathname !== "/login" &&
+              location.pathname !== "/register" && <Sidebar />}
+          </div>
+        )}
+        <div
+          className={
+            isSpecialPath
+              ? styles["skyway-layout-content"]
+              : styles["layout-content"]
+          }
+        >
+          {children}
         </div>
-        <div className={styles["layout-content"]}>{children}</div>
       </div>
     </div>
   );

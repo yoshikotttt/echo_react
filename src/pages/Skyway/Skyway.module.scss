@@ -1,0 +1,63 @@
+.medical-exam-video {
+  display: flex;
+ 
+  height: calc(100vh - 40px); // 100vhはビューポートの高さ。ヘッダーの高さを引くことで、画面の残りの部分だけを使用します
+  width: 100%; // これにより、要素が親要素の全幅を使用します
+}
+
+.side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+ 
+
+  .my-video {
+    flex: 1;
+    width: 100%; // 追加：映像がコンテナの全幅を使用するようにします
+    margin: 0;
+    padding: 0;
+    
+  }
+
+  .controls, .details {
+    width: 100%; // 追加：コントロールと詳細がコンテナの全幅を使用するようにします
+    padding: 0;
+}
+}
+
+.main {
+  flex: 3;
+  display: flex;
+  
+
+  .their-video {
+    flex: 1;
+    width: 100%; // 追加：映像がコンテナの全幅を使用するようにします
+    height: 800px;
+    margin: 0;
+    padding: 0;
+    object-fit: cover;
+  }
+}
+
+.make-call-button{
+    width: 15rem;
+    margin-bottom: 15px;
+    background-color: #3445da;
+}
+.share-screen-button{
+     width: 15rem;
+    margin-bottom: 15px;
+    background-color: #4caf50;
+}
+.stop-screen-button{
+     width: 15rem;
+    margin-bottom: 15px;
+    background-color: #e9ab4e;
+}
+.end-call-button{
+     width: 15rem;
+    margin-bottom: 15px;
+    background-color: #d54040;
+}
+
