@@ -1,0 +1,34 @@
+.examDetailContainer {
+  margin-top: 10px;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+.examDetailContent {
+}
+
+.label {
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px; 
+}
+
+.detail {
+    font-size: 0.9rem;
+    
+}
+
+.dataItem {
+    margin-bottom: 10px; // 各データ項目の間にスペースを追加
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding-left: 20px;
+    
+}
+
+.skywayButton {
+    margin-top: 100px;
+    margin-bottom: 50px;
+}

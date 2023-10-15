@@ -88,8 +88,9 @@ const RequestDoctorHome = () => {
                   <p className={styles["notification-date"]}>
                     {formatDate(notification.updated_at)}
                   </p>
+                  <p>　</p>
                   <p className={styles["notification-user"]}>
-                    返信者: {notification.from_user.name}
+                    {notification.to_user.name}
                   </p>
                   {/* <p className={styles["notification-status"]}>
                     依頼が受諾されました
@@ -107,7 +108,7 @@ const RequestDoctorHome = () => {
         <div className={styles["awaiting-approval"]}>
           <div className={styles["notifications-header"]}>受諾待ち</div>
 
-          <div>
+          <div className={styles["notifications-detail"]}>
             {notifications
               .sort((a, b) => a.id - b.id)
               .filter((notification) => notification.status === 0)
@@ -119,15 +120,16 @@ const RequestDoctorHome = () => {
                   <p className={styles["notification-date"]}>
                     {formatDate(notification.updated_at)}
                   </p>
+                  <p>　</p>
                   <p className={styles["notification-user"]}>
-                    送信先: {notification.to_user_id}
+                    {notification.to_user.name}
                   </p>
                   {/* <p className={styles["notification-status"]}>
                     依頼が受諾されました
                   </p> */}
                   <button
                     onClick={() => handleDetailEditClick(notification.id)}
-                    className={styles["notification-detail-button"]}
+                    className={styles["awaiting-detail-button"]}
                   >
                     詳細
                   </button>

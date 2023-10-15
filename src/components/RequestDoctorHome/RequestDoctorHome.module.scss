@@ -26,6 +26,7 @@
   margin-top: 30px;
   display: flex;
   justify-content: space-between;
+  max-height: 870px;
 }
 
 .notification-ok {
@@ -54,25 +55,42 @@
   border: 1px solid #e1e1e1;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: 870px;
 }
 
 .notifications-detail {
   flex-grow: 1;
   overflow-y: auto;
-  max-height: 570px;
+  max-height: 800px;
+  margin: 10px;
 }
 
 .notification-item {
+  display: flex;
 }
 
 .notification-date {
 }
 
 .notification-user {
+  margin-right: 0;
+  padding-right: 0;
 }
 
 .notification-status {
 }
 
 .notification-detail-button {
+  background-color: #5a6ed2;
+  padding: 3px;
+  width: 5rem;
+  margin-right: 0;
 }
+
+.awaiting-detail-button {
+    background-color: #dc6186;
+  padding: 3px;
+  width: 5rem;
+  margin-right: 0;
+}
+

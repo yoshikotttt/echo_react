@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Peer from "skyway-js";
 import axios from "axios";
+import styles from "./Skyway.module.scss";
 
 const Skyway = () => {
   const { notificationId } = useParams();
@@ -279,56 +280,59 @@ const Skyway = () => {
 
   return (
     <>
-      <p>{toUserName}さんへ依頼</p>
+      {/* <p>{toUserName}さんと接続中</p> */}
       {/* {isCalling && <div className="loading">接続中...</div>} */}
-      <div className="medical-exam-video">
-        <div className="medical-exam-video__main">
+      <div className={styles["medical-exam-video"]}>
+        <div className={styles["side"]}>
           <video
             ref={myVideoRef}
-            className="medical-exam-video__my-video"
-            width={200}
+            className={styles["my-video"]}
             autoPlay
             muted
           ></video>
-
-          <button
-            onClick={handleMakeCall}
-            className="medical-exam-video__make-call-button"
-          >
-            発信
-          </button>
-          <button
-            onClick={handleShareScreen}
-            className="medical-exam-video__share-screen-button"
-          >
-            画面共有
-          </button>
-          <button
-            onClick={handleStopScreen}
-            className="medical-exam-video__stop-screen-button"
-          >
-            共有停止
-          </button>
-          <button
-            onClick={handleEndCall}
-            className="medical-exam-video__end-call-button"
-          >
-            接続終了
-          </button>
+          <div className={styles["controls"]}>
+            <button
+              onClick={handleMakeCall}
+              className={styles["make-call-button"]}
+            >
+              発信
+            </button>
+            <button
+              onClick={handleShareScreen}
+              className={styles["share-screen-button"]}
+            >
+              画面共有
+            </button>
+            <button
+              onClick={handleStopScreen}
+              className={styles["stop-screen-button"]}
+            >
+              共有停止
+            </button>
+            <button
+              onClick={handleEndCall}
+              className={styles["end-call-button"]}
+            >
+              接続終了
+            </button>
+          </div>
+          <div className={styles["details"]}>
+            <p className={styles["age-detail"]}>{medicalExam.age}</p>
+            <p className={styles["gender-detail"]}>{medicalExam.gender}</p>
+            <p className={styles["chief-complaint-detail"]}>
+              {medicalExam.chief_complaint}
+            </p>
+            <p className={styles["medical-history-detail"]}>
+              {medicalExam.medical_history}
+            </p>
+          </div>
         </div>
-        <div className="medical-exam-video__side">
+        <div className={styles["main"]}>
           <video
             ref={theirVideoRef}
-            className="medical-exam-video__their-video"
-            width={200}
-            autoPlay // これを追加
+            className={styles["their-video"]}
+            autoPlay
           ></video>
-          <div className="medical-exam-video__details">
-            <p>{medicalExam.age}</p>
-            <p>{medicalExam.gender}</p>
-            <p>{medicalExam.chief_complaint}</p>
-            <p>{medicalExam.medical_history}</p>
-          </div>
         </div>
       </div>
     </>
