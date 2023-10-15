@@ -1,0 +1,20 @@
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.layout-sidebar {
+  flex: 0 0 20%; /* ここでサイドバーの幅の比率を設定（この場合は20%の幅） */
+  max-width: 20%; /* 同じ20%の幅を確保するための設定 */
+}
+
+.layout-content {
+  flex: 1; /* 残りの幅をcontentに使用する */
+  padding: 1rem; /* 必要に応じてパディングを追加 */
+}
+
+.skyway-layout-content {
+  width: 100%;
+  // 他のスタイルもこちらに追加することができます。
+}
+

@@ -1,0 +1,97 @@
+.form {
+  width: 85%;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-group,
+.radio-group,
+.select-group,
+.checkbox-group {
+  margin-bottom: 15px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.input,
+.select,
+.radio,
+.checkbox {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.radio,
+.checkbox {
+  width: auto;
+  margin-right: 8px;
+}
+
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  & > label {
+    margin-right: 15px;
+  }
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.submit-button {
+  display: block;
+  padding: 10px 15px;
+  background-color:  #4cb679;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color:  #37965e;
+  }
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;  // 縦方向に配置
+
+  .label {
+    margin-bottom: 10px; // ラベルとラジオボタンの間のスペースを追加
+  }
+
+  .radio-options {  // ラジオボタンの選択肢を囲むコンテナ
+    display: flex;   // 横並びに配置
+    gap: 20px;       // 選択肢間のスペース
+  }
+
+  .radio-container { // ラジオボタンとそのテキストを囲む新しいコンテナ用のスタイル
+    display: flex;
+    align-items: center;
+
+    .radio + label {
+      margin-left: 10px; // ラジオボタンの右のスペースを調整
+    }
+  }
+}
+
+
