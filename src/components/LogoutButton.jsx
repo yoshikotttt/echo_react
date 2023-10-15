@@ -1,43 +1,43 @@
-// import React from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
+  const navigate = useNavigate();
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
   // ログアウト処理を実行する関数
   const handleLogout = () => {
-    // Cookieからトークンを取得
-    const token = Cookies.get("token");
+    // ユーザーにログアウトの確認を求める
+    if (window.confirm("ログアウトしますか？")) {
+      const token = Cookies.get("token");
 
-    if (token) {
-      // リクエストヘッダーにトークンを含めるためのオブジェクトを作成
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      }; //response サーバーからのデータやHTTPステータスコード、ヘッダー情報などが含まれる
+      if (token) {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
 
-      // サーバーにログアウトのPOSTリクエストを送信
-      axios
-        .post("http://localhost/api/logout", null, { headers })
-        .then((response) => {
-          // ログアウト成功時の処理
-          Cookies.remove("token"); // トークンをCookieから削除
-          console.log("ログアウトしました");
-        })
-        .catch((error) => {
-          // ログアウトエラー時の処理
-          console.log("ログアウトエラー：", error);
-        });
-    } else {
-      // トークンが存在しない場合の処理
-      console.log("トークンがありません");
+        axios
+          .post(`${baseURL}/api/logout`, null, { headers })
+          .then((response) => {
+            Cookies.remove("token");
+            console.log("ログアウトしました");
+            navigate("/login");
+          })
+          .catch((error) => {
+            console.log("ログアウトエラー：", error);
+          });
+      } else {
+        console.log("トークンがありません");
+      }
     }
   };
 
-  // コンポーネントのレンダリング
   return (
     <div>
-      <button type="button" onClick={handleLogout}>
-        ログアウト
-      </button>
+      {/* テキストリンクの場合 */}
+      <span onClick={handleLogout}>ログアウト</span>
+      {/* もしくはボタンの場合 */}
+      {/* <button type="button" onClick={handleLogout}>ログアウト</button> */}
     </div>
   );
 };

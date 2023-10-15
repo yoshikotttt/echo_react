@@ -15,15 +15,22 @@
 }
 
 .header-title {
-  font-size: 1rem;
+  font-size: 0.8rem;
   margin-right: 40px;
 }
 
 .header-subtitle {
-  font-size: 1rem;
+  font-size: 0.8rem;
   margin-right: auto;
 }
 
-.user-dropdown {
-  cursor: pointer;
+.user-name {
+  font-size: 0.8rem;
+  text-align: right;
+  margin-right: 20px;
+}
+
+.header-logout {
+  font-size: 0.8rem;
+  text-align: right;
 }
