@@ -19,6 +19,7 @@ import Skyway from "./pages/Skyway/Skyway";
 import Layout from "./components/Layout/Layout";
 import ProfileEdit from "./pages/ProfileEdit.jsx/ProfileEdit";
 import { UserProvider } from "./contexts/UserContext";
+import RequestReviewPage from "./pages/RequestReviewPage/RequestReviewPage";
 
 // import PrivateRoute from "./components/common/PrivateRoute";
 
@@ -42,6 +43,10 @@ function App() {
               <Route
                 path="/accepted-exam-detail/:notificationId"
                 element={<AcceptedExamDetail />}
+              ></Route>
+              <Route
+                path="/request-review/:notificationId"
+                element={<RequestReviewPage />}
               ></Route>
               <Route
                 path="/notification-detail"

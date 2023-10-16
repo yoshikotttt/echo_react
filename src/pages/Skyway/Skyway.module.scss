@@ -40,24 +40,48 @@
   }
 }
 
-.make-call-button{
+.make-call-button {
     width: 15rem;
     margin-bottom: 15px;
-    background-color: #3445da;
+    background-color: #6271f7;
+    transition: background-color 0.3s;
 }
-.share-screen-button{
-     width: 15rem;
+
+.make-call-button:hover {
+    background-color: #2531b5;  /* やや濃い青 */
+}
+
+.share-screen-button {
+    width: 15rem;
     margin-bottom: 15px;
     background-color: #4caf50;
+    transition: background-color 0.3s;
 }
-.stop-screen-button{
-     width: 15rem;
+
+.share-screen-button:hover {
+    background-color: #04a509;  /* やや濃い緑 */
+}
+
+.stop-screen-button {
+    width: 15rem;
     margin-bottom: 15px;
-    background-color: #e9ab4e;
+    background-color: #f8ab45;
+    transition: background-color 0.3s;
 }
-.end-call-button{
-     width: 15rem;
+
+.stop-screen-button:hover {
+    background-color: #fb8c0c;  /* やや濃いオレンジ */
+}
+
+.end-call-button {
+    width: 15rem;
     margin-bottom: 15px;
-    background-color: #d54040;
+    background-color: #e93535;
+    transition: background-color 0.3s;
 }
+
+.end-call-button:hover {
+    background-color: #cc0f0f;  /* やや濃い赤 */
+}
+
 
