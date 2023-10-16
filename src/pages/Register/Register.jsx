@@ -19,7 +19,6 @@ const Register = () => {
   const navigate = useNavigate(); // useNavigateを初期化
 
   const onSubmit = (data) => {
-    console.log(data);
     axios
       .post(`${baseURL}/api/register`, data)
       .then(function (response) {

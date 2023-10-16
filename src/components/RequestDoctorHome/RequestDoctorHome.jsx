@@ -32,9 +32,7 @@ const RequestDoctorHome = () => {
 
     return () => clearInterval(intervalId); // コンポーネントがアンマウントされる際にクリア
   }, [baseURL, token]);
-  console.log(notifications)
-
-  
+  // console.log(notifications);
 
   const handleSearch = async (query) => {
     try {
@@ -57,10 +55,10 @@ const RequestDoctorHome = () => {
     navigate(`/accepted-exam-detail/${notificationId}`);
   };
 
-   const handleDetailEditClick = async (notificationId) => {
-     // 検査詳細ページへの遷移
-     navigate(`/accepted-exam-detail/${notificationId}`);
-   };
+  const handleDetailEditClick = async (notificationId) => {
+    // 検査詳細ページへの遷移
+    navigate(`/accepted-exam-detail/${notificationId}`);
+  };
 
   return (
     <>
@@ -75,7 +73,9 @@ const RequestDoctorHome = () => {
 
       <div className={styles["notifications"]}>
         <div className={styles["notification-ok"]}>
-          <div className={styles["notifications-header"]}>検査受諾OK</div>
+          <div className={styles["notifications-header"]}>
+            検査受託可能者リスト
+          </div>
           <div className={styles["notifications-detail"]}>
             {notifications
               .sort((a, b) => b.id - a.id)
@@ -106,7 +106,7 @@ const RequestDoctorHome = () => {
           </div>
         </div>
         <div className={styles["awaiting-approval"]}>
-          <div className={styles["notifications-header"]}>受諾待ち</div>
+          <div className={styles["notifications-header"]}>受託待ちリスト</div>
 
           <div className={styles["notifications-detail"]}>
             {notifications
@@ -136,6 +136,34 @@ const RequestDoctorHome = () => {
                 </div>
               ))}
           </div>
+        </div>
+      </div>
+      <div className={styles["cancel-approval"]}>
+        <div className={styles["notifications-header"]}>キャンセルリスト</div>
+        <div className={styles["cancel-detail"]}>
+          {notifications
+            .sort((a, b) => a.id - b.id)
+            .filter((notification) => notification.status === 2)
+            .map((notification) => (
+              <div key={notification.id} className={styles["cancel-item"]}>
+                <p className={styles["cancel-date"]}>
+                  {formatDate(notification.updated_at)}
+                </p>
+                <p>　</p>
+                <p className={styles["cancel-user"]}>
+                  {notification.to_user.name}
+                </p>
+                {/* <p className={styles["notification-status"]}>
+                    依頼が受諾されました
+                  </p> */}
+                <button
+                  onClick={() => handleDetailEditClick(notification.id)}
+                  className={styles["cancel-button"]}
+                >
+                  詳細
+                </button>
+              </div>
+            ))}
         </div>
       </div>
     </>
