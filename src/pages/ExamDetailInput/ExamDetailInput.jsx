@@ -80,7 +80,7 @@ const ExamDetailInput = () => {
           <textarea
             {...register("chief_complaint")}
             id="chief_complaint"
-            placeholder="Chief Complaint"
+            placeholder="主訴"
             className={styles.textarea}
             rows="4"
           ></textarea>
@@ -93,7 +93,7 @@ const ExamDetailInput = () => {
           <textarea
             {...register("medical_history")}
             id="medical_history"
-            placeholder="Medical History"
+            placeholder="既往歴"
             className={styles.textarea}
             rows="4"
           ></textarea>
@@ -106,7 +106,7 @@ const ExamDetailInput = () => {
           <textarea
             {...register("vitals")}
             id="vitals"
-            placeholder="Vitals"
+            placeholder="バイタル　他"
             className={styles.textarea}
             rows="4"
           ></textarea>

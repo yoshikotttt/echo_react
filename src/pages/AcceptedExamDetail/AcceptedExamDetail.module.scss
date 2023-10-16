@@ -4,10 +4,16 @@
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  max-height: 820px;
+  height: 100%;
 }
 .examDetailContent {
 }
 
+.examDetailContent_messages{
+   max-height: 700px;
+    overflow-y: auto;  
+}
 .label {
     font-weight: bold;
     margin-top: 20px;
@@ -16,6 +22,7 @@
 
 .detail {
     font-size: 0.9rem;
+    text-align: left;
     
 }
 
@@ -28,7 +35,44 @@
     
 }
 
-.skywayButton {
-    margin-top: 100px;
-    margin-bottom: 50px;
+.status_2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  
+}
+
+.re_requestButton {
+  background-color: rgb(86, 86, 198); 
+  color: white; 
+  border: none; 
+  padding: 10px 15px; 
+  cursor: pointer; 
+  transition: 0.3s; 
+}
+
+.re_requestButton:hover {
+  background-color: rgb(41, 41, 178); 
+}
+
+.cancelButton {
+  background-color: rgb(136, 130, 130); 
+  color: white; 
+  border: none; 
+  padding: 10px 15px; 
+  cursor: pointer; 
+  transition: 0.3s; 
+  margin-left: 20px;
+}
+
+.cancelButton:hover {
+  background-color: rgb(89, 87, 87); 
+}
+
+.button-container {
+    position: sticky;
+    bottom: 0;
+    margin-top: 30px;
+  
 }

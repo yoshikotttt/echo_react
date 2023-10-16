@@ -17,8 +17,8 @@ const RequestDoctor = () => {
   const baseURL = import.meta.env.VITE_API_BASE_URL;
   const token = Cookies.get("token");
   const confirmModal = useConfirmModal();
-  console.log(results);
-  console.log(location.state);
+  // console.log(results);
+  // console.log(location.state);
 
   const {
     register,
