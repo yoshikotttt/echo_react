@@ -8,6 +8,11 @@
   height: 100vh;
 }
 
+.header-logo {
+  width: 100px;
+  margin-bottom: 50px;
+}
+
 input {
   width: 100%;
   padding: 8px;
@@ -49,19 +54,25 @@ button {
 }
 
 .form__button {
-  width: 9rem;
+  margin-top: 60px;
+  width: 100%;
   padding: 0.5rem;
-  border: 0.5px solid #d2c4b2;
-  border-radius: 1rem;
-  margin-top: 3rem;
+  border: 0.5px solid #5860c5;
+  border-radius: 4px;
+  margin: auto;
   display: flex;
   text-align: center;
   justify-content: center;
-  background-color: #e8aaa3;
+  background-color: #6268d4;
   color: white;
+  margin-top: 40px;
 }
 
+.form__button:hover {
+  background-color: #484e9f;
+}
 
 .form__link {
   text-decoration: underline;
+  color: #484e9f;
 }

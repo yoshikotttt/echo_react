@@ -74,7 +74,7 @@ const RequestDoctorHome = () => {
       <div className={styles["notifications"]}>
         <div className={styles["notification-ok"]}>
           <div className={styles["notifications-header"]}>
-            検査受託可能者リスト
+            検査可能リスト
           </div>
           <div className={styles["notifications-detail"]}>
             {notifications
@@ -139,7 +139,7 @@ const RequestDoctorHome = () => {
         </div>
       </div>
       <div className={styles["cancel-approval"]}>
-        <div className={styles["notifications-header"]}>キャンセルリスト</div>
+        <div className={styles["notifications-header"]}>キャンセル</div>
         <div className={styles["cancel-detail"]}>
           {notifications
             .sort((a, b) => a.id - b.id)
