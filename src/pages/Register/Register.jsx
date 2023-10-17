@@ -13,6 +13,7 @@ const Register = () => {
   } = useForm({ mode: "onSubmit" });
 
   const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const baseFrontURL = import.meta.env.VITE_BASE_URL;
 
   const password = watch("password");
 
@@ -41,6 +42,11 @@ const Register = () => {
 
   return (
     <div className={styles["form-container"]}>
+      <img
+        src={`${baseFrontURL}/images/2.png`}
+        alt="Logo"
+        className={styles["header-logo"]}
+      />
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <label className={styles["form__label"]} htmlFor="name">
           name
@@ -117,7 +123,7 @@ const Register = () => {
 
         {/* Role 選択肢 */}
         <label className={styles["form__label"]} htmlFor="role">
-          役割
+          種別<p></p>
         </label>
         <select
           className={styles["form__input"]}

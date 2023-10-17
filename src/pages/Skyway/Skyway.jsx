@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Peer from "skyway-js";
 import axios from "axios";
 import styles from "./Skyway.module.scss";
@@ -18,6 +18,7 @@ const Skyway = () => {
   const token = Cookies.get("token");
   const [localStream, setLocalStream] = useState(null); // localStreamをステートとして管理
   const [isStreamReady, setIsStreamReady] = useState(false);
+  const navigate = useNavigate();
 
   const myVideoRef = useRef(null);
   const theirVideoRef = useRef(null);
@@ -189,10 +190,10 @@ const Skyway = () => {
   //   setEventListener(mediaConnection);
   // };
   const handleMakeCall = () => {
-    console.log("handleMakeCall関数が動いている");
+    // console.log("handleMakeCall関数が動いている");
     setIsCalling(true);
     const mediaConnection = peerRef.current.call(toUserSkywayId, localStream);
-    console.log(mediaConnection);
+    // console.log(mediaConnection);
 
     // この部分を追加
     // ここのstreamは受信側のビデオの情報
@@ -276,6 +277,7 @@ const Skyway = () => {
     if (peerRef.current) {
       peerRef.current.destroy();
     }
+    navigate("/");
   };
 
   return (
@@ -317,12 +319,17 @@ const Skyway = () => {
             </button>
           </div>
           <div className={styles["details"]}>
-            <p className={styles["age-detail"]}>{medicalExam.age}</p>
-            <p className={styles["gender-detail"]}>{medicalExam.gender}</p>
+            <div className={styles["age-gender-container"]}>
+              <p className={styles["age-detail"]}>{medicalExam.age}歳</p>
+              <p className={styles["gender-detail"]}>{medicalExam.gender}</p>
+            </div>
             <p className={styles["chief-complaint-detail"]}>
+              <span className={styles["bold-text"]}>主訴：</span>
               {medicalExam.chief_complaint}
             </p>
+            <br />
             <p className={styles["medical-history-detail"]}>
+              <span className={styles["bold-text"]}>既往歴：</span>
               {medicalExam.medical_history}
             </p>
           </div>

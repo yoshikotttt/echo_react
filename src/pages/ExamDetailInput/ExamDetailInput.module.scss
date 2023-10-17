@@ -9,18 +9,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.inputGroup {
-  margin-bottom: 20px;
-}
 
-.label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: 600;
-  color: #333;
-  font-size: 16px;
-  text-align: left;
-}
 
 .input {
   width: 20%;
@@ -40,10 +29,7 @@
   font-size: 14px;
 }
 
-.radioGroup {
-  display: flex;
-  align-items: center;
-}
+
 
 .radioLabel {
   margin-right: 20px;
@@ -52,9 +38,7 @@
   cursor: pointer;
 }
 
-.radio {
-  margin-right: 10px;
-}
+
 
 .submitButton {
   display: block;
@@ -78,4 +62,32 @@
   color: red;
   font-size: 12px;
   margin-top: 5px;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    
+}
+
+.radioGroup {
+    display: flex;
+    gap: 20px; /* 2つのラジオボタンラベルの間のスペース */
+}
+
+.radioLabel {
+    align-items: center; /* テキストとラジオボタンが中央に配置されるようにする */
+    gap: 8px; /* ラジオボタンとテキストの間のスペース */
+     writing-mode: horizontal-tb;
+}
+
+.radio {
+    margin: 0; /* 余分なマージンを削除 */
 }

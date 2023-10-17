@@ -15,6 +15,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   const baseURL = import.meta.env.VITE_API_BASE_URL;
+  const baseFrontURL = import.meta.env.VITE_BASE_URL;
   const [errorMessage, setErrorMessage] = useState("");
   const { setUser } = useUser();
 
@@ -43,9 +44,13 @@ const Login = () => {
     }
   };
 
-
   return (
     <div className={styles["login"]}>
+      <img
+        src={`${baseFrontURL}/images/2.png`}
+        alt="Logo"
+        className={styles["header-logo"]}
+      />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className={styles["login__container"]}
@@ -89,7 +94,6 @@ const Login = () => {
           <span className={styles["login__link"]}>こちら</span>
         </Link>
       </div>
-
     </div>
   );
 };
