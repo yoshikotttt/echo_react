@@ -4,8 +4,13 @@ input {
   font-size: 14px;
   border: 1px solid #ced4da;
   border-radius: 4px;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
   box-sizing: border-box;
+}
+
+.header-logo {
+  width: 100px;
+  margin-bottom: 50px;
 }
 
 .register {
@@ -14,18 +19,6 @@ input {
   margin-top: 2rem;
 }
 
-.button {
-  width: 9rem;
-  padding: 0.5rem;
-  border: 0.5px solid #d2c4b2;
-  border-radius: 1rem;
-  margin: auto;
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  background-color: #e8aaa3;
-  color: white;
-}
 
 .login__error__message {
   color: #d65757;
@@ -52,6 +45,27 @@ input {
 }
 
 .login__link {
-  text-decoration:underline ;
-  color: #d65757;
+  text-decoration: underline;
+  color: #484e9f;
+}
+
+.button {
+  width: 100%;
+  padding: 0.5rem;
+  border: 0.5px solid #5860c5;
+  border-radius: 4px;
+  margin: auto;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  background-color: #6268d4;
+  color: white;
+  margin-top: 40px;
+}
+
+.button:hover {
+    background-color: #484e9f;
+}
+
+.login__label {
 }

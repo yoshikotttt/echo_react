@@ -1,34 +1,42 @@
 .medical-exam-video {
   display: flex;
- 
-  height: calc(100vh - 40px); // 100vhはビューポートの高さ。ヘッダーの高さを引くことで、画面の残りの部分だけを使用します
+
+  height: calc(
+    100vh - 40px
+  ); // 100vhはビューポートの高さ。ヘッダーの高さを引くことで、画面の残りの部分だけを使用します
   width: 100%; // これにより、要素が親要素の全幅を使用します
 }
 
 .side {
   flex: 1;
   display: flex;
-  flex-direction: column;
- 
+  flex-direction: column; 
+  height: 800px;
 
   .my-video {
     flex: 1;
     width: 100%; // 追加：映像がコンテナの全幅を使用するようにします
     margin: 0;
     padding: 0;
-    
   }
 
-  .controls, .details {
-    width: 100%; // 追加：コントロールと詳細がコンテナの全幅を使用するようにします
+  .controls {
+    width: 100%;
     padding: 0;
-}
+    /* flex-grow: 1;  この行を削除 */
+  }
+
+  .details {
+    overflow-y: auto;
+    width: 100%;
+    padding: 0;
+    flex-grow: 1; /* この行を追加 */
+  }
 }
 
 .main {
   flex: 3;
   display: flex;
-  
 
   .their-video {
     flex: 1;
@@ -41,47 +49,60 @@
 }
 
 .make-call-button {
-    width: 15rem;
-    margin-bottom: 15px;
-    background-color: #6271f7;
-    transition: background-color 0.3s;
+  margin-top: 20px;
+  width: 10rem;
+  margin-bottom: 15px;
+  background-color: #4557f7;
+  transition: background-color 0.3s;
 }
 
 .make-call-button:hover {
-    background-color: #2531b5;  /* やや濃い青 */
+  background-color: #2531b5; /* やや濃い青 */
 }
 
 .share-screen-button {
-    width: 15rem;
-    margin-bottom: 15px;
-    background-color: #4caf50;
-    transition: background-color 0.3s;
+  width: 10rem;
+  margin-bottom: 15px;
+  background-color: #4caf50;
+  transition: background-color 0.3s;
 }
 
 .share-screen-button:hover {
-    background-color: #04a509;  /* やや濃い緑 */
+  background-color: #04a509; /* やや濃い緑 */
 }
 
 .stop-screen-button {
-    width: 15rem;
-    margin-bottom: 15px;
-    background-color: #f8ab45;
-    transition: background-color 0.3s;
+  width: 10rem;
+  margin-bottom: 15px;
+  background-color: #f8ab45;
+  transition: background-color 0.3s;
 }
 
 .stop-screen-button:hover {
-    background-color: #fb8c0c;  /* やや濃いオレンジ */
+  background-color: #fb8c0c; /* やや濃いオレンジ */
 }
 
 .end-call-button {
-    width: 15rem;
-    margin-bottom: 15px;
-    background-color: #e93535;
-    transition: background-color 0.3s;
+  width: 10rem;
+  margin-bottom: 15px;
+  background-color: #e93535;
+  transition: background-color 0.3s;
 }
 
 .end-call-button:hover {
-    background-color: #cc0f0f;  /* やや濃い赤 */
+  background-color: #cc0f0f; /* やや濃い赤 */
+}
+
+.age-gender-container {
+  display: flex;
+  justify-content: center;
 }
 
 
+.gender-detail {
+ padding-left: 10px;
+}
+
+.bold-text {
+    font-weight: bold;
+}

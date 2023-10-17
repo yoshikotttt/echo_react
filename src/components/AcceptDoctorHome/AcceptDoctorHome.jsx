@@ -97,7 +97,7 @@ const AcceptDoctorHome = () => {
                   onClick={() => handleExamDetailClick(notification.id)}
                   className={styles["approved-detail-button"]}
                 >
-                  詳細
+                  検査に進む
                 </button>
               </div>
             ))}
