@@ -144,7 +144,7 @@ const Register = () => {
         </p>
 
         <button className={styles["form__button"]} type="submit">
-          送信
+          登録
         </button>
       </form>
       <div className={styles.register}>
