@@ -1,11 +1,29 @@
-# React + Vite
+# リアルタイム通信診断アプリ (React Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+このアプリは、WebRTCを使用して画面を共有し、一緒に診断を進めるためのリアルタイム通信ウェブアプリケーションです。
+（エコー装置にキャプチャボードを接続し、画面を共有することで、エコー検査の様子をリアルタイムで確認できます）
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-# echo_st2_react
-# echo_st2_react
-# echo_react
+## 主な特徴
+
+- **Skyway ライブラリの使用**: 内部的には `skyway-js` バージョン `^4.4.5` を利用しています。
+- **即時通信**: ユーザー間での映像と音声をリアルタイムで共有することができます。
+- **画面共有**: エコーの画面をリアルタイムで共有し、診断を進めることができます。
+- **簡単な発信**: 新規登録時にユーザーに任意のIDが与えられ、そのIDを利用して発信ボタンを押すだけで通信が開始できます。依頼した側からのみ発信が可能です。
+
+## 使い方
+
+1. 新規登録またはログインします。（任意のIDが提供されるので、そのIDをDBに保存）
+2. 検査したい部位を選択し、受託してくれる医師を選択します。
+3. 選択した医師に依頼を送信します。その後、検査の詳細を入力します。
+4. 受託医は受託かキャンセルを選択します。
+5. 受託の場合は依頼医にメッセージを送信します。
+6. 依頼/受託が成立した場合に、コール画面へのボタンが表示されます。
+7. 診断を開始するには、コール画面を双方で起動し、依頼者は発信ボタンをクリックします。
+
+
+skywayの詳しい操作方法や設定については、公式ドキュメントやヘルプページをご参照ください。
+
+
+
+
